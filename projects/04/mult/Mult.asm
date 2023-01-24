@@ -9,4 +9,47 @@
 // This program only needs to handle arguments that satisfy
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
-// Put your code here.
+    @R0
+    D = M // D = R0
+    @ZERO
+    D;JEQ // if R0 == 0 goto ZERO
+
+    @R1
+    D = M // D = R1
+    @ZERO
+    D;JEQ // if R1 == 0 goto ZERO
+
+    @i
+    M = D // i = R[1], use R1 as iterator, add R1 R0s
+    @sum
+    M = 0 // sum = 0
+
+(LOOP) 
+    @i
+    D = M
+    @ASSIGN
+    D;JEQ // if i = 0, goto END
+    @R0
+    D = M // D = R0
+    @sum
+    M = M + D // sum += R0
+    @i
+    M = M-1 // i -= 1
+    @LOOP
+    0;JMP // goto LOOP
+
+(ASSIGN)
+    @sum
+    D = M // D = sum
+    @R2
+    M=D // R2 = sum
+    @END
+    0;JMP
+
+(ZERO)
+    @R2
+    M = 0
+
+(END)
+    @END
+    0;JMP
